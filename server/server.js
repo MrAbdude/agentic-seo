@@ -61,8 +61,14 @@ async function fetchPage(url, browser) {
 async function crawlSite(startUrl) {
   const browser = await puppeteer.launch({
     headless: true,
-    args: ['--no-sandbox']
-  })
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null,
+    args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu'
+    ]
+   })
 
   try {
     const base = new URL(startUrl).origin
