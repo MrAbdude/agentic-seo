@@ -26,7 +26,7 @@ export default function Results() {
   async function handleGenerate() {
   setGenerating(true)
   try {
-    const res = await axios.post('http://localhost:3001/generate', {
+    const res = await axios.post('https://agentic-seo-system.up.railway.app/generate', {
       // WHY: use real project name extracted from page title
       // instead of hardcoded "My Project"
       name: analysis.projectName || analysis.title || 'My Project',

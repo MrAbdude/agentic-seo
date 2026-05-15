@@ -15,7 +15,7 @@ export default function Audit() {
     setError('')
     try {
       const payload = mode === 'url' ? { url } : { text }
-      const res = await axios.post('http://localhost:3001/audit', payload)
+      const res = await axios.post('https://agentic-seo-system.up.railway.app/audit', payload)
       navigate('/results', { state: res.data })
     } catch (err) {
       setError(err.message || 'Something went wrong. Check your URL or try pasting text.')
