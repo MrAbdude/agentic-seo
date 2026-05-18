@@ -4,7 +4,7 @@ import puppeteer from 'puppeteer'
 import { analyzeHTML } from './engine/htmlParser.js'
 import { countTokens, getTokenStatus } from './engine/tokenCounter.js'
 import { calculateScore } from './engine/scorer.js'
-import { generateLLMSTxt, generateAgentsMd, generateSkillMd } from './engine/fileGenerator.js'
+import { generateLLMSTxt, generateAgentsMd, generateSkillMd, generateLLMSFullTxt} from './engine/fileGenerator.js'
 
 const app = express()
 app.use(cors())
@@ -104,6 +104,7 @@ async function crawlSite(startUrl) {
         headings: htmlAnalysis.headings,
         codeBlocks: htmlAnalysis.codeBlocks,
         hasH1: htmlAnalysis.hasH1,
+        fullText: text.slice(0, 3000), // ADD THIS — needed for llms-full.txt
       })
 
       // WHY: add new links to visit queue
@@ -179,9 +180,13 @@ app.post('/audit', async (req, res) => {
       try { const r = await fetch(`${base}/AGENTS.md`); if (r.ok) hasAgentsMd = true } catch {}
     }
 
-    const analysis = {
+    // FIX: sum all pages for real total token count
+      const totalTokenCount = pages.reduce((sum, p) => sum + (p.tokenCount || 0), 0)
+
+      const analysis = {
       ...singleAnalysis,
-      tokenStatus: getTokenStatus(singleAnalysis.tokenCount),
+      tokenCount: totalTokenCount,
+      tokenStatus: getTokenStatus(totalTokenCount),
       hasRobotsTxt,
       hasLLMSTxt,
       hasAgentsMd,
@@ -221,7 +226,8 @@ app.post('/generate', (req, res) => {
     const files = {
       'llms.txt': generateLLMSTxt(info),
       'AGENTS.md': generateAgentsMd(info),
-      'skill.md': generateSkillMd(info)
+      'skill.md': generateSkillMd(info),
+      'llms-full.txt': generateLLMSFullTxt(info)
     }
 
     res.json({ success: true, files })

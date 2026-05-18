@@ -61,6 +61,36 @@ export function calculateScore(analysis) {
     findings.push({ type: 'warning', category: 'Tokens', message: 'No meta description ⚠️' })
   }
 
+  // --- AI Readability (25 pts) — was completely missing before ---
+
+  // WHY: multi-page sites are better for AI agents
+  // one giant page is harder to chunk and navigate
+  const totalPages = analysis.allPages ? analysis.allPages.length : 1
+  if (totalPages > 1) {
+    score += 10
+    findings.push({ type: 'success', category: 'AI Readability', message: `${totalPages} pages found — good site structure ✅` })
+  } else {
+    findings.push({ type: 'warning', category: 'AI Readability', message: 'Only 1 page found — consider splitting content ⚠️' })
+  }
+
+  // WHY: tables help AI agents parse structured data
+  // price lists, feature comparisons, specs etc
+  if (analysis.tables > 0) {
+    score += 5
+    findings.push({ type: 'success', category: 'AI Readability', message: `${analysis.tables} tables found — great for structured data ✅` })
+  } else {
+    findings.push({ type: 'warning', category: 'AI Readability', message: 'No tables found — consider structured data ⚠️' })
+  }
+
+  // WHY: word count too low means content is thin
+  // AI agents can't extract useful info from near-empty pages
+  if (analysis.wordCount > 300) {
+    score += 10
+    findings.push({ type: 'success', category: 'AI Readability', message: `${analysis.wordCount} words — good content depth ✅` })
+  } else {
+    findings.push({ type: 'error', category: 'AI Readability', message: `Only ${analysis.wordCount} words — content too thin ❌` })
+  }
+
   // --- Grade ---
   const grade = score >= 90 ? 'A'
     : score >= 75 ? 'B'
