@@ -2,7 +2,7 @@
 nixPkgs = ["nodejs", "chromium", "nss", "nspr", "atk", "cups", "dbus", "libdrm", "expat", "libxcb", "libxkbcommon", "at-spi2-atk", "pango", "cairo", "xorg.libX11", "xorg.libXcomposite", "xorg.libXdamage", "xorg.libXext", "xorg.libXfixes", "xorg.libXrandr", "mesa", "alsa-lib", "glib"]
 
 [phases.build]
-cmds = ["npm install"]
+cmds = ["npm install", "node node_modules/puppeteer/install.mjs"]
 
 [phases.start]
 cmd = "node server.js"
