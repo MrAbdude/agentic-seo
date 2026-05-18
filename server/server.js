@@ -200,8 +200,9 @@ app.post('/audit', async (req, res) => {
     res.json({ success: true, analysis, result })
 
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message })
-  }
+  console.error('AUDIT ERROR:', err)
+  res.status(500).json({ success: false, error: err.message })
+}
 })
 
 // ─────────────────────────────────────────
