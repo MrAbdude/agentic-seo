@@ -74,7 +74,7 @@ export function generateLLMSTxt(info) {
 
   return `# ${info.name}
 
-> ${info.description}
+> ${getBestDescription(info)}
 
 ## Pages
 ${pagesList}
@@ -118,7 +118,7 @@ export function generateAgentsMd(info) {
 ## Project Overview
 **Name:** ${info.name}
 **Type:** ${siteType} site
-**Description:** ${info.description}
+**Description:** ${getBestDescription(info)}
 
 ## What an AI Agent Can Do Here
 ${capabilities.map(c => `- ${c}`).join('\n')}
@@ -172,7 +172,7 @@ export function generateSkillMd(info) {
   return `# skill.md — ${info.name}
 
 ## What This Source Does
-${info.description}
+${getBestDescription(info)}
 
 **Site type:** ${siteType}
 
@@ -205,7 +205,7 @@ ${keySections}
 
 ## Limitations
 - Token budget: ~${totalTokens} total; split across ${info.pages ? info.pages.length : 1} pages
-- No code examples found on this site${info.codeBlocks > 0 ? ` — actually ${info.codeBlocks} found` : ''}
+${info.codeBlocks > 0 ? `- ${info.codeBlocks} code examples available` : '- No code examples found on this site'}
 - Content may change — always verify live data (prices, availability, hours) by fetching the URL
 `
 }

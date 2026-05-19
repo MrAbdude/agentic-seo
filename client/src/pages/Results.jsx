@@ -30,9 +30,17 @@ export default function Results() {
       // WHY: use real project name extracted from page title
       // instead of hardcoded "My Project"
       name: analysis.projectName || analysis.title || 'My Project',
-      description: analysis.metaDescription || 'A project audited by AEO Studio',
+      description: analysis.metaDescription 
+      || analysis.title 
+      || analysis.projectName 
+      || 'A project audited by AEO Studio',
       headings: analysis.headings.map(h => ({ text: h })),
-      tokenCount: analysis.tokenCount,
+
+      // FIX: sum all page tokens, not just first page
+      tokenCount: analysis.allPages && analysis.allPages.length > 0
+      ? analysis.allPages.reduce((sum, p) => sum + (p.tokenCount || 0), 0)
+      : analysis.tokenCount,
+
       wordCount: analysis.wordCount,
       codeBlocks: analysis.codeBlocks,
       // WHY: pass all crawled pages

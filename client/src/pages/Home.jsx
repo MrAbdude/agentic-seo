@@ -48,7 +48,7 @@ export default function Home() {
           <p className="text-gray-500 text-sm">Point Score</p>
         </div>
         <div>
-          <p className="text-2xl font-bold text-white">3</p>
+          <p className="text-2xl font-bold text-white">4</p>
           <p className="text-gray-500 text-sm">Files Generated</p>
         </div>
       </div>
