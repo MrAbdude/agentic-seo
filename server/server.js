@@ -234,8 +234,9 @@ app.post('/generate', (req, res) => {
     res.json({ success: true, files })
 
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message })
-  }
+  console.error('GENERATE ERROR:', err)
+  res.status(500).json({ success: false, error: err.message })
+}
 })
 
 app.listen(3001, () => {
