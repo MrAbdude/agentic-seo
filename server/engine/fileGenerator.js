@@ -50,6 +50,11 @@ function pageDesc(p) {
 }
 
 
+function getBestDescription(info) {
+  if (info.description && !info.description.includes('audited by AEO'))
+    return info.description
+  return info.pages?.[0]?.description || info.pages?.[0]?.title || info.name
+}
 // ─── 1. llms.txt ─────────────────────────────────────────────────────────────
 // Standard: https://llmstxt.org
 // Purpose: help AI agents discover what pages exist and how large they are
@@ -232,7 +237,7 @@ ${p.fullText ? p.fullText.slice(0, 3000) : '(Full text not captured — fetch th
 
   return `# ${info.name} — Full Content
 
-> ${info.description}
+> ${getBestDescription(info)}
 > Total tokens: ~${totalTokens} | Pages: ${info.pages ? info.pages.length : 1}
 
 ---
