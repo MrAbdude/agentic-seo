@@ -4,11 +4,14 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "@octokit/rest": "^22.0.1",
+    "adm-zip": "^0.5.17",
     "axios": "^1.16.0",
     "cheerio": "^1.2.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "gpt-tokenizer": "^3.4.0",
+    "multer": "^2.1.1",
     "puppeteer": "^24.43.0",
     "remark": "^15.0.1"
   }
